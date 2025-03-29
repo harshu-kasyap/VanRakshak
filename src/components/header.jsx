@@ -22,8 +22,8 @@ const Header = () => {
             <nav className="container flex justify-between items-center mx-auto px-6 h-16 ">
                 <div className="flex items-center mb-1 space-x-2">
                     <Image src="/logo.png" alt="Logo" width={35} height={35} />
-                    <p className="font-saman mt-1 text-3xl font-extrabold">
-                        <Link href="/">वनRaksha</Link>
+                    <p className="font-saman mt-1 text-3xl font-extrabold bg-gradient-to-r from-green-500 via-green-400 to-green-300 bg-clip-text text-transparent">
+                        <Link href="/">VanaRaksha</Link>
                     </p>
                 </div>
 
