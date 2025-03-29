@@ -5,7 +5,7 @@ import { Hero5 } from "@/components/hero";
 export default function Home() {
   return (
     <div className="container w-full mx-auto px-18">
-      <div className="flex w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center px-20">
         <div className="w-2/3">
           <Hero5 />
         </div>

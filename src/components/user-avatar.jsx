@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import {
     LogOut,
     CircleUserRound,
@@ -19,11 +19,11 @@ import {
 } from "lucide-react";
 
 const UserAvatar = () => {
-    // const { user, logout } = useAuth();
-    const user = "Manish Gupta";
-    const logout = () => {
-        console.log("logout");
-    }
+    const { user, logout } = useAuth();
+    // const user = "Manish Gupta";
+    // const logout = () => {
+    //     console.log("logout");
+    // }
 
     const nameShorter = (name) => {
         const namePart = name.split(" ");

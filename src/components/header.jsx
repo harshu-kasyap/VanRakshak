@@ -6,17 +6,12 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode";
 import { SearchBar } from "./SearchBar";
-// import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import UserAvatar from "./user-avatar";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
-    // const { user, logout } = useAuth();
-    const user = "Manish Gupta";
-    const logout = () => {
-        console.log("logout");
-    }
-
+    const { user, logout } = useAuth();
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -103,7 +98,7 @@ const Header = () => {
                                     <UserAvatar />
                                 </>
                             ) : (
-                                <Button className="flex font-medium text-base rounded-full mt-2  px-5 py-2.5 mb-2">
+                                <Button className="flex font-medium text-base rounded-full mt-2  px-5 py-2.5 mb-2 bg-green-500 hover:bg-green-400">
                                     <div className=" mt-0">Login</div>
                                 </Button>
                             )}

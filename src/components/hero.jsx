@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useMemo, useState } from "react";
-
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 import { MoveRight, PhoneCall } from "lucide-react";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export const Hero5 = () => {
     const [titleNumber, setTitleNumber] = useState(0);
     const titles = useMemo(
-        () => ["amazing", "new", "wonderful", "beautiful", "smart"],
+        () => ["nature", "vital", "empowering", "sustainable", "transformative"],
         []
     );
 
@@ -25,23 +25,23 @@ export const Hero5 = () => {
     }, [titleNumber, titles]);
 
     return (
-        <div className="w-full">
+        <div className="w-full ">
             <div className="container mx-auto">
-                <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
+                <div className="flex gap-8 py-20 lg:py-40 items-start justify-center flex-col">
                     <div>
                         <Button variant="secondary" size="sm" className="gap-4">
                             Get started <MoveRight className="w-4 h-4" />
                         </Button>
                     </div>
                     <div className="flex gap-4 flex-col">
-                        <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
+                        <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-left font-regular">
                             <span className="text-spektr-cyan-50">This is something</span>
-                            <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
+                            <span className="relative flex w-full justify-center overflow-hidden text-left md:pb-4 md:pt-1">
                                 &nbsp;
                                 {titles.map((title, index) => (
                                     <motion.span
                                         key={index}
-                                        className="absolute font-semibold"
+                                        className="absolute font-semibold text-green-500"
                                         initial={{ opacity: 0, y: "-100" }}
                                         transition={{ type: "spring", stiffness: 50 }}
                                         animate={
@@ -62,19 +62,19 @@ export const Hero5 = () => {
                             </span>
                         </h1>
 
-                        <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-                            Managing a small business today is already tough. Avoid further
-                            complications by ditching outdated, tedious trade methods. Our
-                            goal is to streamline SMB trade, making it easier and faster than
-                            ever.
+                        <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-left">
+                            Protecting our forests shouldn't be complicated. Report threats, track wildlife, and support conservation efforts with just a few taps. Our mission is to empower communities to safeguard natural treasures for generations to come.
                         </p>
                     </div>
                     <div className="flex flex-row gap-3">
-                        <Button size="lg" className="gap-4" variant="outline">
-                            Jump on a call <PhoneCall className="w-4 h-4" />
-                        </Button>
-                        <Button size="lg" className="gap-4">
-                            Sign up here <MoveRight className="w-4 h-4" />
+                        <Button size="lg" className="gap-4 bg-green-500 hover:bg-green-400">
+                            <div className="flex gap-2 space-x-3">
+                                Download
+                                <Image src="/android.svg"
+                                    alt="android"
+                                    width="20"
+                                    height="20" />
+                            </div>
                         </Button>
                     </div>
                 </div>
