@@ -57,10 +57,11 @@ function Page() {
         }
       );
 
-      login(response.data.data.user);
+      login(response.data.user);
+      console.log(response.data.user);
 
       toast({
-        title: `Welcome ${response.data.data.user.name.split(" ")[0]}`,
+        title: `Welcome ${response.data.user.name.split(" ")[0]}`,
       });
       setTimeout(() => {
         router.push("/dashboard");

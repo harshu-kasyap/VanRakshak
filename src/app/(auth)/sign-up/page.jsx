@@ -23,32 +23,28 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 
 const SignUpSchema = z.object({
-  firstName: z.string().min(3, "First name is required"),
-  lastName: z.string().min(2, "Last name is required"),
+  name: z.string().min(3, "Full name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  phone: z.string().min(10, "Phone number is required"),
+  address: z.object({
+    street: z.string().min(1, "Street is required"),
+    town: z.string().min(1, "Town is required"),
+    pin: z.string().min(6, "PIN code is required"),
+    district: z.string().min(1, "District is required"),
+    state: z.string().min(1, "State is required")
+  }),
   role: z.enum(
-    [
-      "branch_manager",
-      "postmaster",
-      "subdivisional_manager",
-      "divisional_manager",
-      "employee",
-    ],
+    ["admin", "forest_ranger"],
     "Please select a role"
-  ),
-  governmentIdType: z.enum(
-    ["aadhar", "pan", "voter_id", "driving_license", "passport"],
-    "Please select a government Id"
-  ),
-  governmentId: z.string().min(6, "Government Id is required"),
-  mobileNo: z.string().min(10, "Mobile number is required"),
+  )
 });
 
 function Page() {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(SignUpSchema),
     mode: "onChange",
@@ -57,29 +53,36 @@ function Page() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/users/register`,
-        {
-          name: data.firstName + " " + data.lastName,
-          email: data.email,
-          password: data.password,
-          role: data.role,
-          governmentIdType: data.governmentIdType,
-          governmentId: data.governmentId,
-          mobileNo: data.mobileNo,
+      const apiData = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.mobileNo,
+        address: {
+          street: formData.street,
+          town: formData.town,
+          pin: formData.pin,
+          district: formData.district,
+          state: formData.state
         },
+        role: formData.role
+      };
+
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`,
+        apiData,
         {
           withCredentials: true,
         }
       );
       router.push("/sign-in");
-      setLoading(false);
     } catch (error) {
       console.error(error);
       toast({
         title: error.response?.data?.message || "Sign up failed",
         variant: "destructive",
       });
+    } finally {
       setLoading(false);
     }
   };
@@ -164,47 +167,79 @@ function Page() {
                 </p>
               )}
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="governmentIdType">Government Id type</Label>
-              <Select
-                onValueChange={(value) =>
-                  form.setValue("governmentIdType", value)
-                }
-                defaultValue={form.getValues("governmentIdType")}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select id type here" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="aadhar">Aadhar Card</SelectItem>
-                  <SelectItem value="pan">PAN Card</SelectItem>
-                  <SelectItem value="voter_id">Voter ID</SelectItem>
-                  <SelectItem value="driving_license">
-                    Driving License
-                  </SelectItem>
-                  <SelectItem value="passport">Passport</SelectItem>
-                </SelectContent>
-              </Select>
-              {form.formState.errors.governmentIdType && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.governmentIdType.message}
-                </p>
-              )}
+            <div>
+              <Label className="text-xl py-2 mb-2" >Address</Label>
+              <div className="grid gap-2">
+                <Label htmlFor="street">Street</Label>
+                <Input
+                  id="street"
+                  type="text"
+                  {...form.register("street")}
+                />
+                {form.formState.errors.street && (
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.street.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-4 mt-2">
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="town">Town</Label>
+                  <Input
+                    id="town"
+                    type="text"
+                    {...form.register("town")}
+                  />
+                  {form.formState.errors.town && (
+                    <p className="text-sm text-red-500">
+                      {form.formState.errors.town.message}
+                    </p>
+                  )}
+                </div>
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="pin">Pin Code</Label>
+                  <Input
+                    id="pin"
+                    type="number"
+                    {...form.register("pin")}
+                  />
+                  {form.formState.errors.pin && (
+                    <p className="text-sm text-red-500">
+                      {form.formState.errors.pin.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex gap-4 mt-2">
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="district">District</Label>
+                  <Input
+                    id="district"
+                    type="text"
+                    {...form.register("district")}
+                  />
+                  {form.formState.errors.district && (
+                    <p className="text-sm text-red-500">
+                      {form.formState.errors.district.message}
+                    </p>
+                  )}
+                </div>
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    id="state"
+                    type="text"
+                    {...form.register("state")}
+                  />
+                  {form.formState.errors.state && (
+                    <p className="text-sm text-red-500">
+                      {form.formState.errors.state.message}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="governmentId">Government Id</Label>
-              <Input
-                id="governmentId"
-                placeholder="XXXXXXXXXXXXXXXX"
-                type="text"
-                {...form.register("governmentId")}
-              />
-              {form.formState.errors.governmentId && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.governmentId.message}
-                </p>
-              )}
-            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="role">Role</Label>
               <Select
@@ -215,15 +250,10 @@ function Page() {
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="branch_manager">branch manager</SelectItem>
-                  <SelectItem value="postmaster">postmaster</SelectItem>
-                  <SelectItem value="subdivisional_manager">
-                    subdivisional manager
+                  <SelectItem value="admin">
+                    Admin
                   </SelectItem>
-                  <SelectItem value="divisional_manager">
-                    divisional manager
-                  </SelectItem>
-                  <SelectItem value="employee">employee</SelectItem>
+                  <SelectItem value="forest_ranger">Forest Ranger</SelectItem>
                 </SelectContent>
               </Select>
               {form.formState.errors.role && (
@@ -251,7 +281,7 @@ function Page() {
       </div>
       <div className="hidden lg:block">
         <Image
-          src="/register.jpg"
+          src="/register.jpeg"
           alt="Image"
           width="1920"
           height="1080"
